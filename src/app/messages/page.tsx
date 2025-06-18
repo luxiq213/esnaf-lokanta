@@ -54,7 +54,7 @@ export default function MessagesPage() {
       const res = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ receiverId: selectedUser.id, content }),
+        body: JSON.stringify({ senderId: Number(myId), receiverId: Number(selectedUser.id), content }),
       });
       if (res.ok) {
         setContent("");
@@ -122,7 +122,7 @@ export default function MessagesPage() {
                 {error && <div className="alert alert-error mt-2 text-center">{error}</div>}
                 {success && (
                   <div className="alert alert-success mt-2 text-center">
-                    <span className="font-bold text-lg text-[#7a3a13]">{success}</span>
+                    <span className="font-extrabold text-lg text-[#4b1e06] drop-shadow">{success}</span>
                   </div>
                 )}
               </>

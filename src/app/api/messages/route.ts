@@ -24,12 +24,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { senderId, receiverId, content } = await req.json();
-  if (!senderId || !receiverId || !content) {
-    return NextResponse.json({ message: "Eksik alan." }, { status: 400 });
+  try {
+    const { senderId, receiverId, content } = await req.json();
+    if (!senderId || !receiverId || !content) {
+      return NextResponse.json({ message: "Eksik alan." }, { status: 400 });
+    }
+    const message = await prisma.message.create({
+      data: { senderId, receiverId, content }
+    });
+    return NextResponse.json({ message });
+  } catch (error: any) {
+    return NextResponse.json({ message: "Sunucu hatası", error: error?.message, stack: error?.stack }, { status: 500 });
   }
-  const message = await prisma.message.create({
-    data: { senderId, receiverId, content }
-  });
-  return NextResponse.json({ message });
 } 
